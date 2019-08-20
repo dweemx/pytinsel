@@ -7,14 +7,14 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name='tinsel',
+    name='pytinsel',
     version='0.0.1',
     author="Maxime De Waegeneer",
     author_email="mdewaegeneer@gmail.com",
     description="Decorators for Python",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/dweemx/tinsel",
+    url="https://github.com/dweemx/pytinsel",
     packages=setuptools.find_packages(where='src'),
     package_dir={'': 'src'},
     py_modules=[os.path.splitext(os.path.basename(path))[0]
