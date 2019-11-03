@@ -41,9 +41,9 @@ def hof(func):
             iplus1th_byte = bytes([__byte_code[i + 1]])
 
             if ith_byte == _LF and iplus1th_byte in [b'\x00']:
-                ___byte_code = ___byte_code + ith_byte + bytes([len(func_sig.parameters) - 1])
+                ___byte_code = ___byte_code + ith_byte + bytes([len(func.__code__.co_varnames) - 1])
             elif ith_byte == _SF and iplus1th_byte in [b'\x02']:
-                ___byte_code = ___byte_code + ith_byte + bytes([len(func_sig.parameters) - 1])
+                ___byte_code = ___byte_code + ith_byte + bytes([len(func.__code__.co_varnames) - 1])
             elif ith_byte == _LF and iplus1th_byte in list(map(lambda x: bytes([x]), list(range(1, len(func_sig.parameters))))):
                 ___byte_code = ___byte_code + ith_byte + bytes([int.from_bytes(iplus1th_byte, 'little') - 1])
             else:
