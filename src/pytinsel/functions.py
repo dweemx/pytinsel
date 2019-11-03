@@ -1,5 +1,4 @@
 import dis
-from inspect import signature
 from types import CodeType, FunctionType
 from functools import wraps
 
@@ -11,9 +10,6 @@ def hof(func):
         _SF = dis.opmap['STORE_FAST'].to_bytes(1, byteorder='little')
         _LC = dis.opmap['LOAD_CONST'].to_bytes(1, byteorder='little')
         _LF = dis.opmap['LOAD_FAST'].to_bytes(1, byteorder='little')
-
-        from inspect import signature
-        func_sig = signature(func)
 
         byte_code = func.__code__.co_code
         _byte_code = b''
@@ -36,15 +32,19 @@ def hof(func):
         const_store = dis.opmap['STORE_FAST'].to_bytes(1, byteorder='little') + b'\x02'
         __byte_code = const_load + const_store + _byte_code[:]
         ___byte_code = b''
+        _is_1st_param_stored = False
         for i in range(0, len(__byte_code), 2):
             ith_byte = bytes([__byte_code[i]])
             iplus1th_byte = bytes([__byte_code[i + 1]])
 
             if ith_byte == _LF and iplus1th_byte in [b'\x00']:
                 ___byte_code = ___byte_code + ith_byte + bytes([len(func.__code__.co_varnames) - 1])
-            elif ith_byte == _SF and iplus1th_byte in [b'\x02']:
+            elif ith_byte == _SF and iplus1th_byte in [b'\x02'] and not _is_1st_param_stored:
                 ___byte_code = ___byte_code + ith_byte + bytes([len(func.__code__.co_varnames) - 1])
-            elif ith_byte == _LF and iplus1th_byte in list(map(lambda x: bytes([x]), list(range(1, len(func_sig.parameters))))):
+                _is_1st_param_stored = True
+            elif ith_byte == _SF:
+                ___byte_code = ___byte_code + ith_byte + bytes([int.from_bytes(iplus1th_byte, 'little') - 1])
+            elif ith_byte == _LF:
                 ___byte_code = ___byte_code + ith_byte + bytes([int.from_bytes(iplus1th_byte, 'little') - 1])
             else:
                 ___byte_code = ___byte_code + ith_byte + iplus1th_byte
