@@ -10,6 +10,7 @@ def hof(func):
         _SF = dis.opmap['STORE_FAST'].to_bytes(1, byteorder='little')
         _LC = dis.opmap['LOAD_CONST'].to_bytes(1, byteorder='little')
         _LF = dis.opmap['LOAD_FAST'].to_bytes(1, byteorder='little')
+        _PJIF = dis.opmap['POP_JUMP_IF_FALSE'].to_bytes(1, byteorder='little')
 
         byte_code = func.__code__.co_code
         _byte_code = b''
@@ -46,6 +47,8 @@ def hof(func):
                 ___byte_code = ___byte_code + ith_byte + bytes([int.from_bytes(iplus1th_byte, 'little') - 1])
             elif ith_byte == _LF:
                 ___byte_code = ___byte_code + ith_byte + bytes([int.from_bytes(iplus1th_byte, 'little') - 1])
+            elif ith_byte == _PJIF:
+                _new_byte_code = _new_byte_code + ith_byte + bytes([int.from_bytes(iplus1th_byte, 'little') + 4])
             else:
                 ___byte_code = ___byte_code + ith_byte + iplus1th_byte
 
