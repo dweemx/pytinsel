@@ -51,7 +51,7 @@ def hof(func):
             elif ith_byte == _PJIF:
                 ___byte_code = ___byte_code + ith_byte + bytes([int.from_bytes(iplus1th_byte, 'little') + 4])
             elif ith_byte == _PJIT:
-                ___byte_code = ___byte_code + ith_byte + bytes([int.from_bytes(iplus1th_byte, 'little') + 6])
+                ___byte_code = ___byte_code + ith_byte + bytes([int.from_bytes(iplus1th_byte, 'little') + 4])
             else:
                 ___byte_code = ___byte_code + ith_byte + iplus1th_byte
 
