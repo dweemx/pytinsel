@@ -8,7 +8,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name='pytinsel',
-    version='0.0.16',
+    version='0.0.17',
     author="Maxime De Waegeneer",
     author_email="mdewaegeneer@gmail.com",
     description="Decorators for Python",
