@@ -46,7 +46,7 @@ def hof(func):
             elif ith_byte == _SF and iplus1th_byte in [b'\x02'] and not _is_1st_param_stored:
                 ___byte_code = ___byte_code + ith_byte + bytes([len(func.__code__.co_varnames) - 1])
                 _is_1st_param_stored = True
-            elif ith_byte == _LC:
+            elif ith_byte == _LC and _is_1st_param_stored:
                 if iplus2th_byte == _LF:
                     ___byte_code = ___byte_code + ith_byte + bytes([int.from_bytes(iplus1th_byte, 'little')])
                 else:
