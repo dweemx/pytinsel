@@ -38,7 +38,8 @@ def hof(func):
         for i in range(0, len(__byte_code), 2):
             ith_byte = bytes([__byte_code[i]])
             iplus1th_byte = bytes([__byte_code[i + 1]])
-            iplus2th_byte = bytes([__byte_code[i + 2]])
+            if (i + 2) < len(__byte_code):
+                iplus2th_byte = bytes([__byte_code[i + 2]])
 
             if ith_byte == _LF and iplus1th_byte in [b'\x00']:
                 ___byte_code = ___byte_code + ith_byte + bytes([len(func.__code__.co_varnames) - 1])
